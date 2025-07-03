@@ -1,10 +1,9 @@
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include "tinyxml2.h"
-using namespace tinyxml2;
-using namespace std;
+#include "stdafx.h"
+#include "ReadSVG.h"
 
+
+
+//used to print
 void PrintPoints(const char* points) {
     if (!points) return;
     cout << "points:" << endl;
@@ -113,18 +112,18 @@ void PrintAllElements(XMLElement* element) {
     }
 }
 
-int main() {
-    XMLDocument doc;
-    doc.LoadFile("demo.svg");
-    if (doc.ErrorID() != 0) {
-        cout << "Error loading SVG file: " << doc.ErrorID() << endl;
-        return 1;
-    }
-    XMLElement* root = doc.RootElement();
-    if (root == nullptr) {
-        cout << "No root element found." << endl;
-        return 1;
-    }
-    PrintAllElements(root);
-    return 0;
-}
+//int main() {
+//    XMLDocument doc;
+//    doc.LoadFile("demo.svg");
+//    if (doc.ErrorID() != 0) {
+//        cout << "Error loading SVG file: " << doc.ErrorID() << endl;
+//        return 1;
+//    }
+//    XMLElement* root = doc.RootElement();
+//    if (root == nullptr) {
+//        cout << "No root element found." << endl;
+//        return 1;
+//    }
+//    PrintAllElements(root);
+//    return 0;
+//}
