@@ -106,7 +106,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -127,11 +127,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ellipse.cpp" />
+    <ClCompile Include="Line.cpp" />
+    <ClCompile Include="Polyline.cpp" />
+    <ClCompile Include="Polygon.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ReadSVG.cpp" />
+    <ClCompile Include="SVGContainer.cpp" />
+    <ClCompile Include="SVGElement.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ellipse.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="Polyline.h" />
+    <ClInclude Include="Polygon.h" />
+    <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="Shape.h" />
+    <ClInclude Include="SVGContainer.h" />
+    <ClInclude Include="SVGElement.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="tinyxml2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
