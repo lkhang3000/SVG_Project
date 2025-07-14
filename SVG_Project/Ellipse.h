@@ -1,3 +1,4 @@
+/* Defining an Eclipse class and its derived class (Circle) */
 #ifndef _ELLIPSE_
 #define _ELLIPSE_
 
