@@ -1,3 +1,4 @@
+/* Defining SVGContainer class, which will help getting SVGElement datas from an XML files and drawing those elements. */
 #ifndef _SVGCONTAINER_
 #define _SVGCONTAINER_
 
