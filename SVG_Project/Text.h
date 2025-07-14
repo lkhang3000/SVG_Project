@@ -1,3 +1,4 @@
+/* Defining a Text class and its methods */
 #ifndef _TEXT_
 #define _TEXT_
 
