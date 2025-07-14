@@ -1,3 +1,4 @@
+/* Defining a Rectangle class and its methods */
 #ifndef _RECTANGLE_
 #define _RECTANGLE_
 
