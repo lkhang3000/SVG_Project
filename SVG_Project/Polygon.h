@@ -1,3 +1,4 @@
+/* Defining a Polygon class and its methods */
 #ifndef _POLYGON_
 #define _POLYGON_
 
