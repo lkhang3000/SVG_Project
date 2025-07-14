@@ -1,3 +1,4 @@
+/* Defining a Line class and its methods */
 #ifndef _LINE_
 #define _LINE_
 
