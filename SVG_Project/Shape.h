@@ -1,3 +1,4 @@
+/* Defining a Shape class and its methods. Shape class is the base class of Ellipse, Polyline, Rectangle, Polygon */
 #ifndef _SHAPE_
 #define _SHAPE_
 
