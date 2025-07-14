@@ -11,33 +11,6 @@
 #include "tinyxml2.h"
 
 
-/*
-class shapeListNode {
-	shape* data;
-	shapeListNode* pNext;
-public:
-	shapeListNode();
-	void addNextShape(tinyxml2::XMLElement* data);
-	void addNextShape(shapeListNode* data);
-	void drawShape(HDC hdc);
-	shapeListNode* getNextNode();
-	~shapeListNode();
-};
-
-class shapeList {
-	shapeListNode* pHead;
-	shapeListNode* pTail;
-
-	void addFirst(tinyxml2::XMLElement* data);
-public:
-	shapeList();
-	void addTail(tinyxml2::XMLElement* data);
-	void drawAllShape(HDC hdc);
-	~shapeList();
-};
-*/
-
-
 class SVGElement {
 public:
 	virtual void setValue(tinyxml2::XMLElement* element) = 0;
