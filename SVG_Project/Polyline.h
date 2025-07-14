@@ -1,3 +1,4 @@
+/* Defining a Polyline class and its methods */
 #ifndef _POLYLINE_
 #define _POLYLINE_
 
