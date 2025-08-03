@@ -21,6 +21,8 @@ protected:
 	Color fill;
 	Color stroke;
 	int strokeWidth;
+	bool hasFill;
+	bool hasStroke;
 public:
 	shape();
 	virtual void setValue(tinyxml2::XMLElement* element) override;
@@ -29,3 +31,4 @@ public:
 
 
 #endif // !_SHAPE_
+
