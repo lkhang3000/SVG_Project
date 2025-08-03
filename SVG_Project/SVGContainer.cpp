@@ -28,6 +28,7 @@ void SVGContainer::addElement(tinyxml2::XMLElement* element) {
 	else if (elementName == "rect") newElement = new rectangle;
 	else if (elementName == "ellipse") newElement = new ellipse;
 	else if (elementName == "circle") newElement = new circle;
+	else if (elementName == "path") newElement = new path;
 	newElement->setValue(element);
 	this->content.push_back(newElement);
 }
@@ -41,4 +42,5 @@ SVGContainer::~SVGContainer() {
 		delete this->content[i];
 		this->content[i] = NULL;
 	}
+
 }
