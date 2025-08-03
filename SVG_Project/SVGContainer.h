@@ -11,6 +11,7 @@
 #include "Polyline.h"
 #include "Line.h"
 #include "Ellipse.h"
+#include "Path.h"
 
 class SVGContainer {
 	vector<SVGElement*> content; //A vector containing all SVGElement
@@ -23,3 +24,4 @@ public:
 
 
 #endif // !_SVGCONTAINER_
+
