@@ -7,6 +7,8 @@ polygon::polygon() {
 
 void polygon::draw(HDC hdc) {
 	Graphics graphic(hdc);
+	GraphicsState state = graphic.Save();
+	this->handleTransform(&graphic);
 	//Fill
 	SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
 	graphic.FillPolygon(&brush, &this->vertices.front(), this->vertices.size());

@@ -24,6 +24,8 @@ void rectangle::setValue(tinyxml2::XMLElement* element) {
 
 void rectangle::draw(HDC hdc) {
 	Graphics graphic(hdc);
+	GraphicsState state = graphic.Save();
+	this->handleTransform(&graphic);
 	//Fill
 	SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
 	graphic.FillRectangle(&brush, this->origin.X, this->origin.Y, this->width, this->height);

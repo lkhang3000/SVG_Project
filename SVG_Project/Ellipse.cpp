@@ -22,7 +22,10 @@ void ellipse::setValue(tinyxml2::XMLElement* element) {
 
 void ellipse::draw(HDC hdc) {
 	Graphics graphic(hdc);
-	//Fill
+	//Trans
+	GraphicsState state = graphic.Save();
+	this->handleTransform(&graphic);
+
 	SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
 	graphic.FillEllipse(&brush, this->origin.X, this->origin.Y, this->width, this->height);
 	//Draw Outline

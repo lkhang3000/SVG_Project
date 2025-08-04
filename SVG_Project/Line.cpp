@@ -36,6 +36,7 @@ void line::setValue(tinyxml2::XMLElement* element) {
 
 void line::draw(HDC hdc) {
     Graphics g(hdc);
+
     //Draw Line
     Pen pen(Color(this->strokeOpacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
     pen.SetWidth(this->strokeWidth);

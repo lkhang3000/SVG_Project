@@ -29,6 +29,9 @@ void shape::setValue(tinyxml2::XMLElement* element) {
         else if (attr == string("stroke-width")) {
             this->strokeWidth = atof(val);
         }
+        else if (attr == string("transform")) {
+            this->transform = val;
+        }
         else if (attr == string("stroke")) {
             if (valueStr == "none") {
                 this->hasStroke = false;
@@ -64,6 +67,53 @@ void shape::setValue(tinyxml2::XMLElement* element) {
                 BYTE blue = stoi(token);
                 this->fill = Color(BYTE(fillOpacity * 255), red, green, blue);
             }
+        }
+    }
+}
+
+void shape::handleTransform(Graphics* graphics) {
+    string trans = transform;
+
+    int pos = trans.find("translate(");
+    if (pos != string::npos) {
+        int start = pos + 10;
+        int end = trans.find(")", start);
+        string parameter = trans.substr(start, end - start);
+
+        int comma = parameter.find(',');
+        if (comma != string::npos) {
+            double x = stof(parameter.substr(0, comma));
+            double y = stof(parameter.substr(comma + 1));
+            graphics->TranslateTransform(x, y);
+        }
+
+    }
+
+    pos = trans.find("rotate(");
+    if (pos != string::npos) {
+        int start = pos + 7;
+        int end = trans.find(")", start);
+        string parameter2 = trans.substr(start, end - start);
+
+        double angle = stof(parameter2);
+        graphics->RotateTransform(angle);
+    }
+
+    pos = trans.find("scale(");
+    if (pos != string::npos) {
+        int start = pos + 6;
+        int end = trans.find(")", start);
+        string parameter3 = trans.substr(start, end - start);
+
+        int comma = parameter3.find(',');
+        if (comma != string::npos) {
+            double x2 = stof(parameter3.substr(0, comma));
+            double y2 = stof(parameter3.substr(comma + 1));
+            graphics->ScaleTransform(x2, y2);
+        }
+        else {
+            double scale = stof(parameter3);
+            graphics->ScaleTransform(scale, scale);
         }
     }
 }
