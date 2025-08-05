@@ -8,7 +8,7 @@
 #include <gdiplus.h>
 #include <sstream>
 #include "tinyxml2.h"
-#include "Shape.h"
+#include "SVGElement.h"
 
 
 using namespace std;
@@ -16,7 +16,7 @@ using namespace Gdiplus;
 
 #pragma comment (lib,"Gdiplus.lib")
 
-class rectangle : public shape{
+class rectangle : public SVGElement {
 	Point origin;
 	int width;
 	int height;
@@ -25,8 +25,10 @@ public:
 	rectangle();
 	void setValue(tinyxml2::XMLElement* element) override;
 	void draw(HDC hdc) override;
+	void draw(Graphics* g) override;
 };
 
 
 
 #endif // !_RECTANGLE_
+
