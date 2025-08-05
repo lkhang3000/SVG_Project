@@ -18,12 +18,10 @@ using namespace Gdiplus;
 
 class line : public SVGElement {
     vector<Point> vertices;
-    Color stroke;
-    double strokeOpacity;
-    int strokeWidth;
 public:
     line();
     void setValue(tinyxml2::XMLElement* element) override;
     void draw(HDC hdc) override;
+    void draw(Graphics* g) override;
 };
 #endif // !_LINE_
