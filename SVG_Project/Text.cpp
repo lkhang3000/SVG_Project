@@ -12,47 +12,52 @@ wstring text::Utf8ToWstring(const string& str) {
 
 
 //Public
-text::text() {
+text::text() : SVGElement() {
 	this->origin.X = this->origin.Y = 0;
 	this->content = "";
-	this->fontSize = this->fillOpacity = 1;
+	this->fontSize = 1;
 }
 
 void text::setValue(tinyxml2::XMLElement* element) {
-	const char* attrs[] = { "x", "y", "font-size", "fill-opacity", "fill" };
+	this->SVGElement::setValue(element);
+	const char* attrs[] = { "x", "y", "font-size" };
 	for (auto attr : attrs) {
 		const char* val = element->Attribute(attr);
 		if (val) {
 			if (attr == "x") this->origin.X = atoi(val);
 			else if (attr == "y") this->origin.Y = atoi(val);
 			else if (attr == "font-size") this->fontSize = atof(val);
-			else if (attr == "fill-opacity") this->fillOpacity = atof(val);
-			else if (attr == "fill") {
-				stringstream s(val);
-				string token = "";
-				getline(s, token, '(');
-				getline(s, token, ',');
-				BYTE red = stoi(token);
-				getline(s, token, ',');
-				BYTE green = stoi(token);
-				getline(s, token, ')');
-				BYTE blue = stoi(token);
-				this->fill = Color(red, green, blue);
-			}
 		}
 	}
-	this->content = element->GetText();
+	if (element->GetText() != NULL) this->content = element->GetText();
 }
 
 void text::draw(HDC hdc) {
 	Graphics g(hdc);
+	this->draw(&g);
+}
+
+void text::draw(Graphics* g) {
+	this->handleTransform(g);
+	GraphicsPath outline;
 	//Setting up Brush
 	SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
+	//Setting up Pen
+	Pen pen(Color(this->strokeOpacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
+	pen.SetWidth(this->strokeWidth);
 	//Setting up Font
 	FontFamily fontFamily(L"Arial");
 	Font font(&fontFamily, this->fontSize, FontStyleRegular, UnitPixel);
 	//Converting string to Wstring to fit the arguments of Draw function
 	wstring wideString = this->Utf8ToWstring(this->content);
 	//Draw
-	g.DrawString(wideString.c_str(), -1, &font, PointF(this->origin.X, this->origin.Y), &brush);
+	//Draw Text Outline
+	FontFamily family;
+	font.GetFamily(&family);
+	outline.AddString(wideString.c_str(), -1, &family, font.GetStyle(), font.GetSize(), PointF(this->origin.X, this->origin.Y), NULL);
+	g->DrawPath(&pen, &outline);
+	//Draw Fill
+	g->DrawString(wideString.c_str(), -1, &font, PointF(this->origin.X, this->origin.Y), &brush);
+	
 }
+
