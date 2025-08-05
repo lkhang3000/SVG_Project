@@ -3,15 +3,7 @@
 #define _SVGCONTAINER_
 
 
-#include "SVGElement.h"
-#include "Shape.h"
-#include "Rectangle.h"
-#include "Polygon.h"
-#include "Text.h"
-#include "Polyline.h"
-#include "Line.h"
-#include "Ellipse.h"
-#include "Path.h"
+#include "Group.h"
 
 class SVGContainer {
 	vector<SVGElement*> content; //A vector containing all SVGElement
@@ -24,4 +16,5 @@ public:
 
 
 #endif // !_SVGCONTAINER_
+
 
