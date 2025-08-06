@@ -75,7 +75,7 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
                     this->stroke = Color(255, 0, 0);
                 }
                 else if (sVal == "none") {
-                    //this->fill = Color(0, 0, 0);
+                    this->fill = Color(0, 0, 0, 0);
                 }
                 else {
                     stringstream s(val);
@@ -99,7 +99,7 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
                     this->fill = Color(255, 0, 0);
                 }
                 else if (sval == "none") {
-                    //this->fill = Color(0, 0, 0);
+                    this->fill = Color(0, 0, 0, 0);
                 }
                 else {
                     stringstream s(val);

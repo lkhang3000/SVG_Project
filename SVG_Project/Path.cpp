@@ -92,8 +92,10 @@ void path::draw(Graphics* g) {
         cmd->draw(g, &path);
     }
     // Fill
-    SolidBrush brush(Color(static_cast<BYTE>(fillOpacity * 255), fill.GetR(), fill.GetG(), fill.GetB()));
-    g->FillPath(&brush, &path);
+    if (fill.GetA() != 0) {
+        SolidBrush brush(fill);
+        g->FillPath(&brush, &path);
+    }
     // Stroke
     Pen pen(Color(static_cast<BYTE>(this->strokeOpacity * 255), this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
     pen.SetWidth(this->strokeWidth);
