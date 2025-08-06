@@ -9,6 +9,8 @@ SVGElement::SVGElement() {
 	this->stroke = Color(0, 0, 0, 0);
 }
 void SVGElement::handleTransform(Graphics* graphics) {
+    graphics->ScaleTransform(5.0f, 5.0f);
+
     if (this->transform == "") return;
     string trans = this->transform;
 
@@ -26,19 +28,6 @@ void SVGElement::handleTransform(Graphics* graphics) {
             }
         }
 
-    }
-
-    pos = trans.find("rotate(");
-    if (pos != string::npos) {
-        size_t start = pos + 7;
-        size_t end = trans.find(")", start);
-        if (end != string::npos) {
-            string parameter2 = trans.substr(start, end - start);
-            double angle = stod(parameter2);
-            if (angle != 0 && angle != -360 && angle != 360) {
-                graphics->RotateTransform((REAL)angle);
-            }
-        }
     }
 
     pos = trans.find("scale(");
@@ -59,6 +48,20 @@ void SVGElement::handleTransform(Graphics* graphics) {
             }
         }
     }
+
+    pos = trans.find("rotate(");
+    if (pos != string::npos) {
+        size_t start = pos + 7;
+        size_t end = trans.find(")", start);
+        if (end != string::npos) {
+            string parameter2 = trans.substr(start, end - start);
+            double angle = stod(parameter2);
+            if (angle != 0 && angle != -360 && angle != 360) {
+                graphics->RotateTransform((REAL)angle);
+            }
+        }
+    }
+
 }
 
 void SVGElement::deleteTransform() {
