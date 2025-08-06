@@ -18,6 +18,7 @@ void SVGGroup::draw(Graphics* g) {
 void SVGGroup::setValue(tinyxml2::XMLElement* element) {
 	const char* attrs[] = { "fill", "fill-opacity", "stroke", "stroke-width", "stroke-opacity", "transform" };
 	for (auto attr : attrs) {
+
 		const char* val = element->Attribute(attr);
 		if (val) {
 			if (attr == "fill-opacity") this->fillOpacity = atof(val);
@@ -31,8 +32,30 @@ void SVGGroup::setValue(tinyxml2::XMLElement* element) {
 				else if (sVal == "red") {
 					this->stroke = Color(255, 0, 0);
 				}
+				else if (sVal == "green") {
+					this->stroke = Color(0, 255, 0);
+				}
+				else if (sVal == "yellow") {
+					this->stroke = Color(255, 255, 0);
+				}
+				else if (sVal == "blue") {
+					this->stroke = Color(0, 0, 255);
+				}
 				else if (sVal == "none") {
-					this->fill = Color(0, 0, 0, 0);
+					this->stroke = Color(0, 0, 0, 0);
+				}
+				else if (sVal[0] == '#') {
+					string hex = sVal.substr(1);
+					if (hex.length() == 3) {
+						hex = string(2, hex[0]) + string(2, hex[1]) + string(2, hex[2]);
+					}
+
+					if (hex.length() == 6) {
+						int r = stoi(hex.substr(0, 2), 0, 16);
+						int g = stoi(hex.substr(2, 2), 0, 16);
+						int b = stoi(hex.substr(4, 2), 0, 16);
+						this->stroke = Color(r, g, b);
+					}
 				}
 				else{
 					stringstream s(val);
@@ -55,8 +78,30 @@ void SVGGroup::setValue(tinyxml2::XMLElement* element) {
 				else if (sval == "red") {
 					this->fill = Color(255, 0, 0);
 				}
+				else if (sval == "green") {
+					this->fill = Color(0, 255, 0);
+				}
+				else if (sval == "yellow") {
+					this->fill = Color(255, 255, 0);
+				}
+				else if (sval == "blue") {
+					this->fill = Color(0, 0, 255);
+				}
 				else if (sval == "none") {
 					this->fill = Color(0, 0, 0, 0);
+				}
+				else if (sval[0] == '#') {
+					string hex = sval.substr(1);
+					if (hex.length() == 3) {
+						hex = string(2, hex[0]) + string(2, hex[1]) + string(2, hex[2]);
+					}
+
+					if (hex.length() == 6) {
+						int r = stoi(hex.substr(0, 2), 0, 16);
+						int g = stoi(hex.substr(2, 2), 0, 16);
+						int b = stoi(hex.substr(4, 2), 0, 16);
+						this->fill = Color(r, g, b);
+					}
 				}
 				else {
 					stringstream s(val);
@@ -86,8 +131,10 @@ void SVGGroup::addElements(tinyxml2::XMLElement* element) {
 			newElement = new SVGGroup;
 			const char* attrs[] = { "fill", "fill-opacity", "stroke", "stroke-width", "stroke-opacity" };
 			for (auto attr : attrs) { //add all "father" group attributes into "son" group attributes, so that the "father"s attributes do affect the "son".
-				const char* val = element->Attribute(attr);
-				if (val) child->SetAttribute(attr, val);
+				if (!child->Attribute(attr)) {
+					const char* val = element->Attribute(attr);
+					if (val) child->SetAttribute(attr, val);
+				}
 			}
 			newElement->setValue(child);
 			this->content.push_back(newElement);

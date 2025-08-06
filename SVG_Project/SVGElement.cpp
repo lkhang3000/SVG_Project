@@ -5,6 +5,8 @@ SVGElement::SVGElement() {
     this->transform = "";
     this->fillOpacity = this->strokeOpacity = 1;
     this->strokeWidth = 1;
+	this->fill = Color(0, 0, 0);
+	this->stroke = Color(0, 0, 0, 0);
 }
 void SVGElement::handleTransform(Graphics* graphics) {
     if (this->transform == "") return;
@@ -18,9 +20,16 @@ void SVGElement::handleTransform(Graphics* graphics) {
 
         int comma = parameter.find(',');
         if (comma != string::npos) {
-            double x = stof(parameter.substr(0, comma));
-            double y = stof(parameter.substr(comma + 1));
-            graphics->TranslateTransform(x, y);
+            double x = stod(parameter.substr(0, comma));
+            double y = stod(parameter.substr(comma + 1));
+            graphics->TranslateTransform((REAL)x, (REAL)y);
+        }
+        else {
+            stringstream ss(parameter);
+            double x, y;
+            if (ss >> x >> y) {
+                graphics->TranslateTransform((REAL)x, (REAL)y);
+            }
         }
 
     }
@@ -31,8 +40,8 @@ void SVGElement::handleTransform(Graphics* graphics) {
         int end = trans.find(")", start);
         string parameter2 = trans.substr(start, end - start);
 
-        double angle = stof(parameter2);
-        graphics->RotateTransform(angle);
+        double angle = stod(parameter2);
+        graphics->RotateTransform((REAL)angle);
     }
 
     pos = trans.find("scale(");
@@ -43,13 +52,13 @@ void SVGElement::handleTransform(Graphics* graphics) {
 
         int comma = parameter3.find(',');
         if (comma != string::npos) {
-            double x2 = stof(parameter3.substr(0, comma));
-            double y2 = stof(parameter3.substr(comma + 1));
-            graphics->ScaleTransform(x2, y2);
+            double x2 = stod(parameter3.substr(0, comma));
+            double y2 = stod(parameter3.substr(comma + 1));
+            graphics->ScaleTransform((REAL)x2, (REAL)y2);
         }
         else {
-            double scale = stof(parameter3);
-            graphics->ScaleTransform(scale, scale);
+            double scale = stod(parameter3);
+            graphics->ScaleTransform((REAL)scale, (REAL)scale);
         }
     }
 }
@@ -74,8 +83,30 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
                 else if (sVal == "red") {
                     this->stroke = Color(255, 0, 0);
                 }
+                else if (sVal == "green") {
+                    this->stroke = Color(0, 255, 0);
+                }
+                else if (sVal == "yellow") {
+                    this->stroke = Color(255, 255, 0);
+                }
+                else if (sVal == "blue") {
+                    this->stroke = Color(0, 0, 255);
+                }
                 else if (sVal == "none") {
-                    this->fill = Color(0, 0, 0, 0);
+                    this->stroke = Color(0, 0, 0, 0);
+                }
+                else if (sVal[0] == '#') {
+                    string hex = sVal.substr(1);
+                    if (hex.length() == 3) {
+                        hex = string(2, hex[0]) + string(2, hex[1]) + string(2, hex[2]);
+                    }
+
+                    if (hex.length() == 6) {
+                        int r = stoi(hex.substr(0, 2), 0, 16);
+                        int g = stoi(hex.substr(2, 2), 0, 16);
+                        int b = stoi(hex.substr(4, 2), 0, 16);
+                        this->stroke = Color(r, g, b);
+                    }
                 }
                 else {
                     stringstream s(val);
@@ -86,6 +117,7 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
                     getline(s, token, ',');
                     BYTE green = stoi(token);
                     getline(s, token, ')');
+                    if (!token.empty() && token.back() == ')') token.pop_back();
                     BYTE blue = stoi(token);
                     this->stroke = Color(red, green, blue);
                 }
@@ -98,8 +130,30 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
                 else if (sval == "red") {
                     this->fill = Color(255, 0, 0);
                 }
+                else if (sval == "green") {
+                    this->fill = Color(0, 255, 0);
+                }
+                else if (sval == "yellow") {
+                    this->fill = Color(255, 255, 0);
+                }
+                else if (sval == "blue") {
+                    this->fill = Color(0, 0, 255);
+                }
                 else if (sval == "none") {
                     this->fill = Color(0, 0, 0, 0);
+                }
+                else if (sval[0] == '#') {
+                    string hex = sval.substr(1);
+                    if (hex.length() == 3) {
+                        hex = string(2, hex[0]) + string(2, hex[1]) + string(2, hex[2]);
+                    }
+
+                    if (hex.length() == 6) {
+                        int r = stoi(hex.substr(0, 2), 0, 16);
+                        int g = stoi(hex.substr(2, 2), 0, 16);
+                        int b = stoi(hex.substr(4, 2), 0, 16);
+                        this->fill = Color(r, g, b);
+                    }
                 }
                 else {
                     stringstream s(val);
@@ -110,6 +164,7 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
                     getline(s, token, ',');
                     BYTE green = stoi(token);
                     getline(s, token, ')');
+                    if (!token.empty() && token.back() == ')') token.pop_back();
                     BYTE blue = stoi(token);
                     this->fill = Color(red, green, blue);
                 }
