@@ -14,20 +14,14 @@ void SVGElement::handleTransform(Graphics* graphics) {
 
     int pos = trans.find("translate(");
     if (pos != string::npos) {
-        int start = pos + 10;
-        int end = trans.find(")", start);
-        string parameter = trans.substr(start, end - start);
-
-        int comma = parameter.find(',');
-        if (comma != string::npos) {
-            double x = stod(parameter.substr(0, comma));
-            double y = stod(parameter.substr(comma + 1));
-            graphics->TranslateTransform((REAL)x, (REAL)y);
-        }
-        else {
-            stringstream ss(parameter);
-            double x, y;
-            if (ss >> x >> y) {
+        size_t start = pos + 10;
+        size_t end = trans.find(")", start);
+        if (end != string::npos) {
+            string parameter = trans.substr(start, end - start);
+            size_t comma = parameter.find(',');
+            if (comma != string::npos) {
+                double x = stod(parameter.substr(0, comma));
+                double y = stod(parameter.substr(comma + 1));
                 graphics->TranslateTransform((REAL)x, (REAL)y);
             }
         }
@@ -36,29 +30,33 @@ void SVGElement::handleTransform(Graphics* graphics) {
 
     pos = trans.find("rotate(");
     if (pos != string::npos) {
-        int start = pos + 7;
-        int end = trans.find(")", start);
-        string parameter2 = trans.substr(start, end - start);
-
-        double angle = stod(parameter2);
-        graphics->RotateTransform((REAL)angle);
+        size_t start = pos + 7;
+        size_t end = trans.find(")", start);
+        if (end != string::npos) {
+            string parameter2 = trans.substr(start, end - start);
+            double angle = stod(parameter2);
+            if (angle != 0 && angle != -360 && angle != 360) {
+                graphics->RotateTransform((REAL)angle);
+            }
+        }
     }
 
     pos = trans.find("scale(");
     if (pos != string::npos) {
-        int start = pos + 6;
-        int end = trans.find(")", start);
-        string parameter3 = trans.substr(start, end - start);
-
-        int comma = parameter3.find(',');
-        if (comma != string::npos) {
-            double x2 = stod(parameter3.substr(0, comma));
-            double y2 = stod(parameter3.substr(comma + 1));
-            graphics->ScaleTransform((REAL)x2, (REAL)y2);
-        }
-        else {
-            double scale = stod(parameter3);
-            graphics->ScaleTransform((REAL)scale, (REAL)scale);
+        size_t start = pos + 6;
+        size_t end = trans.find(")", start);
+        if (end != string::npos) {
+            string parameter3 = trans.substr(start, end - start);
+            size_t comma = parameter3.find(',');
+            if (comma != string::npos) {
+                double x2 = stod(parameter3.substr(0, comma));
+                double y2 = stod(parameter3.substr(comma + 1));
+                graphics->ScaleTransform((REAL)x2, (REAL)y2);
+            }
+            else {
+                double scale = stod(parameter3);
+                graphics->ScaleTransform((REAL)scale, (REAL)scale);
+            }
         }
     }
 }

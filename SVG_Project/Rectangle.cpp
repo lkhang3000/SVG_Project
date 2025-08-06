@@ -30,12 +30,16 @@ void rectangle::draw(HDC hdc) {
 void rectangle::draw(Graphics* g) {
 	this->handleTransform(g);
 	//Fill
-	SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
-	g->FillRectangle(&brush, this->origin.X, this->origin.Y, this->width, this->height);
+	if (this->fill.GetA() > 0) {
+		SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
+		g->FillRectangle(&brush, this->origin.X, this->origin.Y, this->width, this->height);
+	}
 	//Draw Outline
-	Pen pen(Color(this->strokeOpacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
-	pen.SetWidth(this->strokeWidth);
-	g->DrawRectangle(&pen, this->origin.X, this->origin.Y, this->width, this->height);
+	if (this->stroke.GetA() > 0 && this->strokeWidth > 0) {
+		Pen pen(Color(this->strokeOpacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
+		pen.SetWidth(this->strokeWidth);
+		g->DrawRectangle(&pen, this->origin.X, this->origin.Y, this->width, this->height);
+	}
 }
 
 

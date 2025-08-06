@@ -27,14 +27,12 @@ void ellipse::draw(HDC hdc) {
 
 void ellipse::draw(Graphics* g) {
     this->handleTransform(g);
-    
-    //Fill - only if not transparent
+   
     if (this->fill.GetA() > 0) {
         SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
         g->FillEllipse(&brush, static_cast<INT>(this->origin.X - this->width / 2), static_cast<INT>(this->origin.Y - this->height / 2), static_cast<INT>(this->width), static_cast<INT>(this->height));
     }
     
-    //Draw Outline - only if not transparent and width > 0
     if (this->stroke.GetA() > 0 && this->strokeWidth > 0) {
         Pen pen(Color(this->strokeOpacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
         pen.SetWidth(this->strokeWidth);
