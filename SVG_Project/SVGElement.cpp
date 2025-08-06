@@ -9,7 +9,8 @@ SVGElement::SVGElement() {
 	this->stroke = Color(0, 0, 0, 0);
 }
 void SVGElement::handleTransform(Graphics* graphics) {
-    graphics->ScaleTransform(5.0f, 5.0f);
+    //graphics->ScaleTransform(3.0f, 3.0f);
+    
 
     if (this->transform == "") return;
     string trans = this->transform;
@@ -93,6 +94,21 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
                 else if (sVal == "blue") {
                     this->stroke = Color(0, 0, 255);
                 }
+                else if (sVal == "midnightblue") {
+                    this->stroke = Color(25, 25, 112);
+                }
+                else if (sVal == "darkslategray") {
+                    this->stroke = Color(47, 79, 79);
+                }
+                else if (sVal == "blueviolet") {
+                    this->stroke = Color(138, 43, 226);
+                }
+                else if (sVal == "CYAN") {
+                    this->stroke = Color(0, 255, 255);
+                }
+                else if (sVal == "navy") {
+                    this->stroke = Color(0, 0, 128);
+                }
                 else if (sVal == "none") {
                     this->stroke = Color(0, 0, 0, 0);
                 }
@@ -139,6 +155,24 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
                 }
                 else if (sval == "blue") {
                     this->fill = Color(0, 0, 255);
+                }
+                else if (sval == "grey") {
+                    this->fill = Color(128, 128, 128);
+                }
+                else if (sval == "midnightblue") {
+                    this->fill = Color(25, 25, 112);
+                }
+                else if (sval == "darkslategray") {
+                    this->fill = Color(47, 79, 79);
+                }
+                else if (sval == "blueviolet") {
+                    this->fill = Color(138, 43, 226);
+                }
+                else if (sval == "CYAN") {
+                    this->fill = Color(0, 255, 255);
+                }
+                else if (sval == "navy") {
+                    this->fill = Color(0, 0, 128);
                 }
                 else if (sval == "none") {
                     this->fill = Color(0, 0, 0, 0);

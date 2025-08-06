@@ -1,14 +1,36 @@
-<svg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
-  <path d='M1,12c0-7,4-11,11-11h87v87c0,5-5,11-11,11h-87z' fill='rgb(113, 35, 35)' stroke='rgb(113, 32, 32)' stroke-width='2'/>
-  
-  <path d='M13,22h80v60l-40,15l-39-16z' fill='rgb(163, 51, 51)'/>
-  <path d='M25,2l27,18l28,11l18,48v-77z' fill='rgb(165, 84, 84)'/>
-  <path d='M80,31l19,8l-9,20z' fill='rgb(213, 166, 124)'/>
-  <path d='M78,2l2,29l19,8z' fill='rgb(201, 152, 8)'/>
-  <path d='M53,20l25-18l2,29z' fill='rgb(183, 118, 6)'/>
-  <path d='M90,58l8,20l-20,7z' fill='rgb(182, 101, 5)'/>
-  <path d='M98,78l-47,18l2,2h36zM25,2l28,18l-27,10l-12,27l-11-19z' fill='rgb(167, 45, 58)'/>
-  <path d='M14,56l-11,23l26,6z' fill='rgb(146, 36, 34)'/>
-  
-  <path d='M93,23c-38-35-78,17-77,69h41c-17-52,7-81,35-67zM62,80l-7-1l2,5h7zM15,72l-7-1l-2,7l8,1zM58,62l-5-3v5l6,3zM22,47l-7-3l-2,6l7,3zM59,48l-4-4l-1,4l4,4zM62,31l-2,4l3,3l1-3zM34,26l-4-3l-4,4l5,4zM73,25h-4l1,4l3-1zM86,24h-4v2h4zM87,14l-4-3v3l4,2zM50,13l-3-4l-4,3l3,4zM68,10l-2-4h-5l2,4z' fill='rgb(255, 255, 255)'/>
+<svg xmlns="http://www.w3.org/2000/svg">
+    <rect stroke="darkslategray" x="640" y="50" width="400" height="350" fill="grey" fill-opacity="0.24" />
+    <g transform="translate(160, 90)" stroke-width="4" stroke="black">
+        <rect fill-opacity="0.2" x="130" y="0" width="700" height="600" fill="none" />
+        <g stroke-opacity="0.75" stroke="midnightblue" fill="rgb(153, 204, 255)" fill-opacity="1">
+            <g stroke-opacity="0.75" fill-opacity="1" stroke-width="3" fill="blueviolet">
+                <polygon points="300,300 330,210 420,210 350,150 390,60 300,120 210,60 250,150 180,210 270,210"
+                    fill="rgb(254, 52, 126)" />
+                <line x1="300" y1="300" x2="300" y2="360" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="420" y1="210" x2="420" y2="270" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="390" y1="60" x2="390" y2="130" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="210" y1="60" x2="210" y2="130" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="180" y1="210" x2="180" y2="270" stroke="rgb(200,8,21)" stroke-width="2" />
+
+                <polygon points="655,300 685,210 775,210 705,150 745,60 655,120 565,60 605,150 535,210 625,210"
+                    fill="rgb(139,0,255)" />
+                <line x1="655" y1="300" x2="655" y2="360" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="775" y1="210" x2="775" y2="270" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="745" y1="60" x2="745" y2="130" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="565" y1="60" x2="565" y2="130" stroke="rgb(200,8,21)" stroke-width="2" />
+                <line x1="535" y1="210" x2="535" y2="270" stroke="rgb(200,8,21)" stroke-width="2" />
+
+                <polyline points="450,350 480,280 505,350" fill-opacity="0.8" fill="CYAN" />
+
+                <ellipse cx="480" cy="450" rx="100" ry="40" fill="yellow" />
+            </g>
+        </g>
+        <g fill="black" stroke="navy" font-family="times new roman" stroke-width="2.0">
+            <text x="655" y="350" font-size="30" text-anchor="middle" transform="rotate(25) translate(50,60)">sleep all
+                day</text>
+        </g>
+    </g>
+
+    <text font-family="times new roman" x="640" y="720" fill="black" font-size="40" stroke-opacity="0.75"
+        stroke-width="2.0" fill-opacity="0.95" stroke="navy" text-anchor="middle" font-style="italic">...</text>
 </svg>

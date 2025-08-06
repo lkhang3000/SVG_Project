@@ -20,13 +20,15 @@ text::text() : SVGElement() {
 
 void text::setValue(tinyxml2::XMLElement* element) {
 	this->SVGElement::setValue(element);
-	const char* attrs[] = { "x", "y", "font-size" };
+	const char* attrs[] = { "x", "y", "font-size", "dx", "dy"};
 	for (auto attr : attrs) {
 		const char* val = element->Attribute(attr);
 		if (val) {
 			if (attr == "x") this->origin.X = atoi(val);
 			else if (attr == "y") this->origin.Y = atoi(val);
 			else if (attr == "font-size") this->fontSize = atof(val);
+			else if(attr == "dx") this->origin.X += atoi(val);
+			else if (attr == "dy") this->origin.Y += atoi(val);
 		}
 	}
 	if (element->GetText() != NULL) this->content = element->GetText();
@@ -38,6 +40,7 @@ void text::draw(HDC hdc) {
 }
 
 void text::draw(Graphics* g) {
+	GraphicsState state = g->Save();
 	this->handleTransform(g);
 
 	//Setting up Font
@@ -63,6 +66,8 @@ void text::draw(Graphics* g) {
 		pen.SetWidth(this->strokeWidth);
 		g->DrawPath(&pen, &outline);
 	}
+
+	g->Restore(state);
 
 }
 
