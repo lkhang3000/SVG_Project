@@ -108,9 +108,6 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
                 else if (sVal == "navy") {
                     this->stroke = Color(0, 0, 128);
                 }
-                else if (sVal == "darkslategray") {
-					this->stroke = Color(47, 79, 79);
-                }
                 else if (sVal == "purple") {
 					this->stroke = Color(128, 0, 128);
 				}
