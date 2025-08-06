@@ -1,5 +1,54 @@
 #include "Path.h"
 
+// Helper to check if a string is a command letter
+bool path::isCommand(const string& token) {
+    return token.size() == 1 && isalpha(token[0]);
+}
+
+// Robust tokenizer for SVG path data
+vector<string> path::tokenizeSVGPath(const string& d) {
+    vector<string> tokens;
+    string current;
+    size_t i = 0;
+    while (i < d.size()) {
+        char c = d[i];
+        if (isalpha(c)) {
+            if (!current.empty()) {
+                tokens.push_back(current);
+                current.clear();
+            }
+            tokens.push_back(std::string(1, c));
+            i++;
+        }
+        else if (c == '-' || c == '+') {
+            // Sign can be part of a number, but if not at start, finish current token
+            if (!current.empty()) {
+                tokens.push_back(current);
+                current.clear();
+            }
+            current += c;
+            i++;
+        }
+        else if (isdigit(c) || c == '.') {
+            current += c;
+            i++;
+        }
+        else if (c == ',' || isspace(c)) {
+            if (!current.empty()) {
+                tokens.push_back(current);
+                current.clear();
+            }
+            i++;
+        }
+        else {
+            // Unhandled character, skip
+            i++;
+        }
+    }
+    if (!current.empty()) tokens.push_back(current);
+    return tokens;
+}
+
 path::path() : SVGElement() {}
 
 path::~path() {
@@ -7,74 +56,90 @@ path::~path() {
 }
 
 void path::setValue(tinyxml2::XMLElement* element) {
+    float currentX = 0, currentY = 0;
+    float startX = 0, startY = 0;
+
     this->SVGElement::setValue(element);
     const char* dAttr = element->Attribute("d");
     if (!dAttr) return;
 
-    string d(dAttr);
-    vector<string> tokens;
-    string current;
-    for (char c : d) {
-        if (std::isalpha(c)) {
-            if (!current.empty()) {
-                tokens.push_back(current);
-                current.clear();
-            }
-            tokens.push_back(string(1, c)); // push command
-        }
-        else if (std::isdigit(c) || c == '.' || c == '-' || c == '+') { // handle numbers
-            current += c;
-        }
-        else if (c == ',' || std::isspace(c)) {
-            if (!current.empty()) {
-                tokens.push_back(current);
-                current.clear();
-            }
-        }
-    }
-    if (!current.empty()) tokens.push_back(current);
+    std::string d(dAttr);
+    auto tokens = tokenizeSVGPath(d);
 
-    // Parser
     size_t i = 0;
     while (i < tokens.size()) {
-        string cmd = tokens[i++];
-        if (cmd == "M") {
+        std::string cmd = tokens[i++];
+
+        if (cmd == "M" || cmd == "m") {
             float x = std::stof(tokens[i++]);
             float y = std::stof(tokens[i++]);
+            if (cmd == "m") { x += currentX; y += currentY; }
             commands.push_back(new MoveTo(x, y));
+            currentX = startX = x;
+            currentY = startY = y;
+
+            // --- Handle implicit lineto after moveto ---
+            while (i + 1 < tokens.size() && !isCommand(tokens[i])) {
+                float x1 = std::stof(tokens[i++]);
+                float y1 = std::stof(tokens[i++]);
+                if (cmd == "m") { x1 += currentX; y1 += currentY; }
+                commands.push_back(new Lineto(x1, y1));
+                currentX = x1;
+                currentY = y1;
+            }
         }
-        else if (cmd == "L") {
-            while (i + 1 < tokens.size() && !std::isalpha(tokens[i][0])) {
+        else if (cmd == "L" || cmd == "l") {
+            while (i + 1 < tokens.size() && !isCommand(tokens[i])) {
                 float x = std::stof(tokens[i++]);
                 float y = std::stof(tokens[i++]);
+                if (cmd == "l") { x += currentX; y += currentY; }
                 commands.push_back(new Lineto(x, y));
+                currentX = x;
+                currentY = y;
             }
         }
-        else if (cmd == "H") {
-            while (i < tokens.size() && !std::isalpha(tokens[i][0])) {
+
+        else if (cmd == "H" || cmd == "h") {
+            while (i < tokens.size() && !isCommand(tokens[i])) {
                 float x = std::stof(tokens[i++]);
-                commands.push_back(new HLineTo(x));
+                if (cmd == "h") x += currentX;
+                commands.push_back(new Lineto(x, currentY));
+                currentX = x;
             }
         }
-        else if (cmd == "V") {
-            while (i < tokens.size() && !std::isalpha(tokens[i][0])) {
+
+        else if (cmd == "V" || cmd == "v") {
+            while (i < tokens.size() && !isCommand(tokens[i])) {
                 float y = std::stof(tokens[i++]);
-                commands.push_back(new VLineTo(y));
+                if (cmd == "v") y += currentY;
+                commands.push_back(new Lineto(currentX, y));
+                currentY = y;
             }
         }
-        else if (cmd == "C") {
-            while (i + 5 < tokens.size() && !std::isalpha(tokens[i][0])) {
-                float x1 = stof(tokens[i++]);
-                float y1 = stof(tokens[i++]);
-                float x2 = stof(tokens[i++]);
-                float y2 = stof(tokens[i++]);
-                float x = stof(tokens[i++]);
-                float y = stof(tokens[i++]);
+
+        else if (cmd == "C" || cmd == "c") {
+            while (i + 5 < tokens.size() && !isCommand(tokens[i])) {
+                float x1 = std::stof(tokens[i++]);
+                float y1 = std::stof(tokens[i++]);
+                float x2 = std::stof(tokens[i++]);
+                float y2 = std::stof(tokens[i++]);
+                float x = std::stof(tokens[i++]);
+                float y = std::stof(tokens[i++]);
+                if (cmd == "c") {
+                    x1 += currentX; y1 += currentY;
+                    x2 += currentX; y2 += currentY;
+                    x += currentX; y += currentY;
+                }
                 commands.push_back(new CurveTo(x1, y1, x2, y2, x, y));
+                currentX = x;
+                currentY = y;
             }
         }
+
         else if (cmd == "Z" || cmd == "z") {
             commands.push_back(new ClosePath());
+            currentX = startX;
+            currentY = startY;
         }
     }
 }
@@ -101,4 +166,3 @@ void path::draw(Graphics* g) {
     pen.SetWidth(this->strokeWidth);
     g->DrawPath(&pen, &path);
 }
-
