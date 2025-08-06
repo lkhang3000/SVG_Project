@@ -1,3 +1,4 @@
+/* Defining a Polyline class and its methods */
 #ifndef _POLYLINE_
 #define _POLYLINE_
 
@@ -7,7 +8,7 @@
 #include <sstream>
 #include <vector>
 #include "tinyxml2.h"
-#include "Shape.h"
+#include "SVGElement.h"
 
 
 using namespace std;
@@ -18,12 +19,15 @@ using namespace Gdiplus;
 
 
 // --------- Polylines ---------
-class polyline : public shape {
+class polyline : public SVGElement {
     vector<Point> vertices;
 public:
+    polyline();
     void setValue(tinyxml2::XMLElement* element) override;
     void draw(HDC hdc) override;
+    void draw(Graphics* g) override;
 };
 
 #endif // !_POLYLINE_
+
 

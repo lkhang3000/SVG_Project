@@ -1,71 +1,102 @@
 #include "SVGElement.h"
 
-//ShapeList (using linked list to contain SVGElements)
-/*
-shapeList::shapeList() {
-	this->pHead = this->pTail = NULL;
-}
-
-void shapeList::addFirst(tinyxml2::XMLElement* data) {
-	this->pHead = this->pTail = new shapeListNode;
-	this->pHead->addNextShape(data);
-}
-
-void shapeList::addTail(tinyxml2::XMLElement* data) {
-	if (this->pHead == NULL) this->addFirst(data);
-	else {
-		shapeListNode* pTemp = this->pTail;
-		this->pTail = new shapeListNode;
-		this->pTail->addNextShape(data);
-		pTemp->addNextShape(this->pTail);
-	}
-}
-
-void shapeList::drawAllShape(HDC hdc) {
-	if (this->pHead == NULL) return;
-	for (shapeListNode* pTemp = this->pHead; pTemp != NULL; pTemp = pTemp->getNextNode()) {
-		pTemp->drawShape(hdc);
-	}
-}
-
-shapeList::~shapeList() {
-	delete this->pHead;
-	this->pHead = this->pTail = NULL;
-}
-
-
-//ShapeListNode
-
-shapeListNode::shapeListNode() {
-	this->data = NULL;
-	this->pNext = NULL;
-}
-
-void shapeListNode::addNextShape(tinyxml2::XMLElement* data) {
-	string name = data->Name();
-	if (name == "rect") this->data = new rectangle;
-	else this->data = new polygon;
-	this->data->setValue(data);
-}
-
-void shapeListNode::addNextShape(shapeListNode* data) {
-	this->pNext = data;
-}
-
-void shapeListNode::drawShape(HDC hdc) {
-	this->data->draw(hdc);
-}
-
-shapeListNode* shapeListNode::getNextNode() {
-	return this->pNext;
-}
-
-shapeListNode::~shapeListNode() {
-	delete this->data;
-	this->data = NULL;
-	delete this->pNext;
-	this->pNext = NULL;
-}
-*/
 //SVGContainer
+SVGElement::SVGElement() {
+    this->transform = "";
+    this->fillOpacity = this->strokeOpacity = 1;
+    this->strokeWidth = 1;
+}
+void SVGElement::handleTransform(Graphics* graphics) {
+    if (this->transform == "") return;
+    string trans = this->transform;
+
+    int pos = trans.find("translate(");
+    if (pos != string::npos) {
+        int start = pos + 10;
+        int end = trans.find(")", start);
+        string parameter = trans.substr(start, end - start);
+
+        int comma = parameter.find(',');
+        if (comma != string::npos) {
+            double x = stof(parameter.substr(0, comma));
+            double y = stof(parameter.substr(comma + 1));
+            graphics->TranslateTransform(x, y);
+        }
+
+    }
+
+    pos = trans.find("rotate(");
+    if (pos != string::npos) {
+        int start = pos + 7;
+        int end = trans.find(")", start);
+        string parameter2 = trans.substr(start, end - start);
+
+        double angle = stof(parameter2);
+        graphics->RotateTransform(angle);
+    }
+
+    pos = trans.find("scale(");
+    if (pos != string::npos) {
+        int start = pos + 6;
+        int end = trans.find(")", start);
+        string parameter3 = trans.substr(start, end - start);
+
+        int comma = parameter3.find(',');
+        if (comma != string::npos) {
+            double x2 = stof(parameter3.substr(0, comma));
+            double y2 = stof(parameter3.substr(comma + 1));
+            graphics->ScaleTransform(x2, y2);
+        }
+        else {
+            double scale = stof(parameter3);
+            graphics->ScaleTransform(scale, scale);
+        }
+    }
+}
+
+void SVGElement::deleteTransform() {
+    this->transform = "";
+}
+
+void SVGElement::setValue(tinyxml2::XMLElement* element) {
+    const char* attrs[] = { "fill", "fill-opacity", "stroke", "stroke-width", "stroke-opacity", "transform" };
+    for (auto attr : attrs) {
+        const char* val = element->Attribute(attr);
+        if (val) {
+            if (attr == "fill-opacity") this->fillOpacity = atof(val);
+            else if (attr == "stroke-opacity") this->strokeOpacity = atof(val);
+            else if (attr == "stroke-width") this->strokeWidth = atoi(val);
+            else if (attr == "stroke") {
+                if (string(val) != "none") {
+                    stringstream s(val);
+                    string token = "";
+                    getline(s, token, '(');
+                    getline(s, token, ',');
+                    BYTE red = stoi(token);
+                    getline(s, token, ',');
+                    BYTE green = stoi(token);
+                    getline(s, token, ')');
+                    BYTE blue = stoi(token);
+                    this->stroke = Color(red, green, blue);
+                }
+            }
+            else if (attr == "fill") {
+                if (string(val) != "none") {
+                    stringstream s(val);
+                    string token = "";
+                    getline(s, token, '(');
+                    getline(s, token, ',');
+                    BYTE red = stoi(token);
+                    getline(s, token, ',');
+                    BYTE green = stoi(token);
+                    getline(s, token, ')');
+                    BYTE blue = stoi(token);
+                    this->fill = Color(red, green, blue);
+                }
+            }
+            else if (attr == "transform") this->transform = val;
+        }
+    }
+}
+
 

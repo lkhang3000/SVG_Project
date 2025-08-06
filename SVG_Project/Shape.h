@@ -1,3 +1,4 @@
+/* Defining a Shape class and its methods. Shape class is the base class of Ellipse, Polyline, Rectangle, Polygon */
 #ifndef _SHAPE_
 #define _SHAPE_
 
@@ -20,11 +21,16 @@ protected:
 	Color fill;
 	Color stroke;
 	int strokeWidth;
+	bool hasFill;
+	bool hasStroke;
+	string transform;
 public:
 	shape();
+	void handleTransform(Graphics* graphics);
 	virtual void setValue(tinyxml2::XMLElement* element) override;
 	virtual void draw(HDC hdc) override = 0; //When Completed, try deleting this function to see if the code still runs
 };
 
 
 #endif // !_SHAPE_
+

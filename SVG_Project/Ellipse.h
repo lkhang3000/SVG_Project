@@ -1,3 +1,4 @@
+/* Defining an Eclipse class and its derived class (Circle) */
 #ifndef _ELLIPSE_
 #define _ELLIPSE_
 
@@ -6,7 +7,7 @@
 #include <gdiplus.h>
 #include <sstream>
 #include "tinyxml2.h"
-#include "Shape.h"
+#include "SVGElement.h"
 
 
 using namespace std;
@@ -14,7 +15,7 @@ using namespace Gdiplus;
 
 #pragma comment (lib,"Gdiplus.lib")
 
-class ellipse : public shape {
+class ellipse : public SVGElement {
 protected:
 	Point origin;
 	double height, width;
@@ -22,10 +23,12 @@ public:
 	ellipse();
 	void setValue(tinyxml2::XMLElement* element) override;
 	void draw(HDC hdc) override;
+	void draw(Graphics* g) override;
 };
 
 class circle : public ellipse {
 public:
+	circle();
 	void setValue(tinyxml2::XMLElement* element) override;
 };
 

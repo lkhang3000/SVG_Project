@@ -1,3 +1,4 @@
+/* Defining a Text class and its methods */
 #ifndef _TEXT_
 #define _TEXT_
 
@@ -18,16 +19,15 @@ class text : public SVGElement{
     Point origin;
     string content;
     double fontSize;
-    Color fill;
-    double fillOpacity;
     wstring Utf8ToWstring(const string& str);
 public:
     text();
     void setValue(tinyxml2::XMLElement* element) override;
     void draw(HDC hdc) override;
-    
+    void draw(Graphics* graphics) override;
 };
 
 
 #endif // !_TEXT_
+
 

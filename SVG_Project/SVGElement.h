@@ -1,8 +1,10 @@
+/* Defining a SVGElement class and its methods. SVGElement class is the base class of Text, Line, Shape */
 #ifndef _SVGELEMENT_
 #define _SVGELEMENT_
 
 
 #include <iostream>
+#include <string>
 #include <objidl.h>
 #include <windows.h>
 #include <gdiplus.h>
@@ -10,42 +12,27 @@
 #include <vector>
 #include "tinyxml2.h"
 
+using namespace std;
+using namespace Gdiplus;
 
-/*
-class shapeListNode {
-	shape* data;
-	shapeListNode* pNext;
-public:
-	shapeListNode();
-	void addNextShape(tinyxml2::XMLElement* data);
-	void addNextShape(shapeListNode* data);
-	void drawShape(HDC hdc);
-	shapeListNode* getNextNode();
-	~shapeListNode();
-};
-
-class shapeList {
-	shapeListNode* pHead;
-	shapeListNode* pTail;
-
-	void addFirst(tinyxml2::XMLElement* data);
-public:
-	shapeList();
-	void addTail(tinyxml2::XMLElement* data);
-	void drawAllShape(HDC hdc);
-	~shapeList();
-};
-*/
-
+#pragma comment (lib,"Gdiplus.lib")
 
 class SVGElement {
+protected:
+	string transform;
+	double fillOpacity;
+	double strokeOpacity;
+	Color fill;
+	Color stroke;
+	int strokeWidth;
 public:
-	virtual void setValue(tinyxml2::XMLElement* element) = 0;
+	SVGElement();
+	void handleTransform(Graphics* graphics);
+	void deleteTransform();
+	virtual void setValue(tinyxml2::XMLElement* element);
 	virtual void draw(HDC hdc) = 0;
+	virtual void draw(Graphics* g) = 0;
+	
 };
 
-
-
-
 #endif // !_SVGELEMENT_
-
