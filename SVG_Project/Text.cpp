@@ -39,25 +39,30 @@ void text::draw(HDC hdc) {
 
 void text::draw(Graphics* g) {
 	this->handleTransform(g);
-	GraphicsPath outline;
-	//Setting up Brush
-	SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
-	//Setting up Pen
-	Pen pen(Color(this->strokeOpacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
-	pen.SetWidth(this->strokeWidth);
+
 	//Setting up Font
 	FontFamily fontFamily(L"Arial");
 	Font font(&fontFamily, this->fontSize, FontStyleRegular, UnitPixel);
 	//Converting string to Wstring to fit the arguments of Draw function
 	wstring wideString = this->Utf8ToWstring(this->content);
-	//Draw
-	//Draw Text Outline
-	FontFamily family;
-	font.GetFamily(&family);
-	outline.AddString(wideString.c_str(), -1, &family, font.GetStyle(), font.GetSize(), PointF(this->origin.X, this->origin.Y), NULL);
-	g->DrawPath(&pen, &outline);
-	//Draw Fill
-	g->DrawString(wideString.c_str(), -1, &font, PointF(this->origin.X, this->origin.Y), &brush);
-	
+
+	//Setting up Brush
+	if (this->fill.GetA() > 0) {
+		SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
+		g->DrawString(wideString.c_str(), -1, &font, PointF(this->origin.X, this->origin.Y), &brush);
+	}
+
+	if (this->stroke.GetA() > 0 && this->strokeWidth > 0) {
+		GraphicsPath outline;
+
+		FontFamily family;
+		font.GetFamily(&family);
+		outline.AddString(wideString.c_str(), -1, &family, font.GetStyle(), font.GetSize(), PointF(this->origin.X, this->origin.Y), NULL);
+		//Setting up Pen
+		Pen pen(Color(this->strokeOpacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
+		pen.SetWidth(this->strokeWidth);
+		g->DrawPath(&pen, &outline);
+	}
+
 }
 
