@@ -35,6 +35,11 @@ void SVGContainer::addElement(tinyxml2::XMLElement* element) {
 }
 
 void SVGContainer::drawAllElement(HDC hdc) {
+	/*Graphics graphics(hdc);
+	graphics.ScaleTransform(0.19f, 0.19f);
+	for (int i = 0; i < this->content.size(); i++) {
+		this->content[i]->draw(&graphics); 
+	}*/
 	for (int i = 0; i < this->content.size(); i++) this->content[i]->draw(hdc);
 }
 

@@ -150,6 +150,7 @@ void path::draw(HDC hdc) {
 }
 
 void path::draw(Graphics* g) {
+    GraphicsState state = g->Save();
     this->handleTransform(g);
     GraphicsPath path;
     // Draw the path commands
@@ -162,7 +163,11 @@ void path::draw(Graphics* g) {
         g->FillPath(&brush, &path);
     }
     // Stroke
-    Pen pen(Color(static_cast<BYTE>(this->strokeOpacity * 255), this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
-    pen.SetWidth(this->strokeWidth);
-    g->DrawPath(&pen, &path);
+    if (this->stroke.GetA() > 0 && this->strokeWidth > 0) {
+        Pen pen(Color(static_cast<BYTE>(this->strokeOpacity * 255), this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
+        pen.SetWidth(this->strokeWidth);
+        g->DrawPath(&pen, &path);
+    }
+
+    g->Restore(state);
 }

@@ -56,6 +56,15 @@ void SVGGroup::setValue(tinyxml2::XMLElement* element) {
 				else if (sVal == "navy") {
 					this->stroke = Color(0, 0, 128);
 				}
+				else if (sVal == "purple") {
+					this->stroke = Color(128, 0, 128);
+				}
+				else if (sVal == "darkmagenta") {
+					this->stroke = Color(139, 0, 139);
+				}
+				else if (sVal == "white") {
+					this->stroke = Color(255, 255, 255);
+				}
 				else if (sVal == "none") {
 					this->stroke = Color(0, 0, 0, 0);
 				}
@@ -119,6 +128,15 @@ void SVGGroup::setValue(tinyxml2::XMLElement* element) {
 				}
 				else if (sval == "navy") {
 					this->fill = Color(0, 0, 128);
+				}
+				else if (sval == "deepskyblue") {
+					this->fill = Color(0, 191, 255);
+				}
+				else if (sval == "skyblue") {
+					this->fill = Color(135, 206, 235);
+				}
+				else if (sval == "black") {
+					this->fill = Color(0, 0, 0);
 				}
 				else if (sval == "none") {
 					this->fill = Color(0, 0, 0, 0);
