@@ -15,6 +15,7 @@
 #include <gdiplus.h>
 #include <vector>
 #include <string>
+std::string path = "demo.svg";
 #include <iostream>
 
 
@@ -30,14 +31,14 @@ using namespace Gdiplus;
 VOID OnPaint(HDC hdc) {
     // Ref: https://docs.microsoft.com/en-us/windows/desktop/gdiplus/-gdiplus-getting-started-use
     SVGContainer s;
-    s.addElements("demo.svg");
+    s.addElements(path.c_str());
     s.drawAllElement(hdc);
     //s.~SVGContainer();
 }
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
-INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR, INT iCmdShow) {
+INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR lpCmdLine, INT iCmdShow) {
     HWND                hWnd;
     MSG                 msg;
     WNDCLASS            wndClass;
@@ -46,6 +47,9 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR, INT iCmdShow) {
     // Initialize GDI+.
     GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
+    if (__argc > 1) {
+        path = __argv[1];
+    }
     
 
     wndClass.style = CS_HREDRAW | CS_VREDRAW;
