@@ -33,6 +33,8 @@ public:
     void setValue(tinyxml2::XMLElement* element) override;
     void draw(HDC hdc) override;
     void draw(Graphics* g) override;
+    bool isCommand(const string& token);
+	vector<string> tokenizeSVGPath(const string& d);
 };
 
 #endif // !_SVGPATH_
