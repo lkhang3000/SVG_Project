@@ -1,6 +1,6 @@
 /* Defining a SVGElement class and its methods. SVGElement class is the base class of Text, Line, Shape */
-#ifndef _SVGELEMENT_
-#define _SVGELEMENT_
+#ifndef _SVGELEMENT_H
+#define _SVGELEMENT_H
 
 
 #include <iostream>

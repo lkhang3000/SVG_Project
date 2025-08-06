@@ -24,28 +24,52 @@ void SVGGroup::setValue(tinyxml2::XMLElement* element) {
 			else if (attr == "stroke-opacity") this->strokeOpacity = atof(val);
 			else if (attr == "stroke-width") this->strokeWidth = atoi(val);
 			else if (attr == "stroke") {
-				stringstream s(val);
-				string token = "";
-				getline(s, token, '(');
-				getline(s, token, ',');
-				BYTE red = stoi(token);
-				getline(s, token, ',');
-				BYTE green = stoi(token);
-				getline(s, token, ')');
-				BYTE blue = stoi(token);
-				this->stroke = Color(red, green, blue);
+				string sVal(val);
+				if (sVal == "black") {
+					this->stroke = Color(0, 0, 0);
+				}
+				else if (sVal == "red") {
+					this->stroke = Color(255, 0, 0);
+				}
+				else if (sVal == "none") {
+					//this->fill = Color(0, 0, 0);
+				}
+				else{
+					stringstream s(val);
+					string token = "";
+					getline(s, token, '(');
+					getline(s, token, ',');
+					BYTE red = stoi(token);
+					getline(s, token, ',');
+					BYTE green = stoi(token);
+					getline(s, token, ')');
+					BYTE blue = stoi(token);
+					this->stroke = Color(red, green, blue);
+				}
 			}
 			else if (attr == "fill") {
-				stringstream s(val);
-				string token = "";
-				getline(s, token, '(');
-				getline(s, token, ',');
-				BYTE red = stoi(token);
-				getline(s, token, ',');
-				BYTE green = stoi(token);
-				getline(s, token, ')');
-				BYTE blue = stoi(token);
-				this->fill = Color(red, green, blue);
+				string sval(val);
+				if (sval == "black") {
+					this->fill = Color(0, 0, 0);
+				}
+				else if (sval == "red") {
+					this->fill = Color(255, 0, 0);
+				}
+				else if (sval == "none") {
+					//this->fill = Color(0, 0, 0);
+				}
+				else {
+					stringstream s(val);
+					string token = "";
+					getline(s, token, '(');
+					getline(s, token, ',');
+					BYTE red = stoi(token);
+					getline(s, token, ',');
+					BYTE green = stoi(token);
+					getline(s, token, ')');
+					BYTE blue = stoi(token);
+					this->fill = Color(red, green, blue);
+				}
 			}
 			else if (attr == "transform") this->transform = val;
 		}

@@ -32,7 +32,7 @@ VOID OnPaint(HDC hdc) {
     SVGContainer s;
     s.addElements("demo.svg");
     s.drawAllElement(hdc);
-    s.~SVGContainer();
+    //s.~SVGContainer();
 }
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

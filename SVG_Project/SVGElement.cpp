@@ -67,7 +67,17 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
             else if (attr == "stroke-opacity") this->strokeOpacity = atof(val);
             else if (attr == "stroke-width") this->strokeWidth = atoi(val);
             else if (attr == "stroke") {
-                if (string(val) != "none") {
+                string sVal(val);
+                if (sVal == "black") {
+                    this->stroke = Color(0, 0, 0);
+                }
+                else if (sVal == "red") {
+                    this->stroke = Color(255, 0, 0);
+                }
+                else if (sVal == "none") {
+                    //this->fill = Color(0, 0, 0);
+                }
+                else {
                     stringstream s(val);
                     string token = "";
                     getline(s, token, '(');
@@ -81,7 +91,17 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
                 }
             }
             else if (attr == "fill") {
-                if (string(val) != "none") {
+                string sval(val);
+                if (sval == "black") {
+                    this->fill = Color(0, 0, 0);
+                }
+                else if (sval == "red") {
+                    this->fill = Color(255, 0, 0);
+                }
+                else if (sval == "none") {
+                    //this->fill = Color(0, 0, 0);
+                }
+                else {
                     stringstream s(val);
                     string token = "";
                     getline(s, token, '(');

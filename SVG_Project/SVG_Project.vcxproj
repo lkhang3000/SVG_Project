@@ -127,8 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClosePath.cpp" />
+    <ClCompile Include="CurveTo.cpp" />
     <ClCompile Include="Ellipse.cpp" />
+    <ClCompile Include="Group.cpp" />
+    <ClCompile Include="HLineTo.cpp" />
     <ClCompile Include="Line.cpp" />
+    <ClCompile Include="LineTo.cpp" />
+    <ClCompile Include="MoveTo.cpp" />
+    <ClCompile Include="Path.cpp" />
     <ClCompile Include="Polyline.cpp" />
     <ClCompile Include="Polygon.cpp" />
     <ClCompile Include="Rectangle.cpp" />
@@ -138,10 +145,19 @@
     <ClCompile Include="SVGElement.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
+    <ClCompile Include="VLineTo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClosePath.h" />
+    <ClInclude Include="CurveTo.h" />
     <ClInclude Include="Ellipse.h" />
+    <ClInclude Include="Group.h" />
+    <ClInclude Include="HLineTo.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="LineTo.h" />
+    <ClInclude Include="MoveTo.h" />
+    <ClInclude Include="Path.h" />
+    <ClInclude Include="PathCommand.h" />
     <ClInclude Include="Polyline.h" />
     <ClInclude Include="Polygon.h" />
     <ClInclude Include="Rectangle.h" />
@@ -150,6 +166,7 @@
     <ClInclude Include="SVGElement.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="tinyxml2.h" />
+    <ClInclude Include="VLineTo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
