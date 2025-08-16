@@ -4,14 +4,14 @@ SVGGroup::SVGGroup() {
 	this->fillOpacity = this->strokeOpacity = 1;
 	this->strokeWidth = 1;
 }
-void SVGGroup::draw(HDC hdc) {
+void SVGGroup::draw(HDC hdc, gradientDatabase& database) {
 	Graphics g(hdc);
-	this->draw(&g);
+	this->draw(&g, database);
 }
-void SVGGroup::draw(Graphics* g) {
+void SVGGroup::draw(Graphics* g, gradientDatabase& database) {
 	this->handleTransform(g);
 	for (int i = 0; i < this->content.size(); i++) {
-		this->content[i]->draw(g);
+		this->content[i]->draw(g, database);
 	}
 }
 
@@ -26,7 +26,8 @@ void SVGGroup::setValue(tinyxml2::XMLElement* element) {
 			else if (attr == "stroke-width") this->strokeWidth = atoi(val);
 			else if (attr == "stroke") {
 				string sVal(val);
-				if (sVal == "black") {
+				if (sVal.find("url") != string::npos) this->strokeID = sVal;
+				else if (sVal == "black") {
 					this->stroke = Color(0, 0, 0);
 				}
 				else if (sVal == "red") {

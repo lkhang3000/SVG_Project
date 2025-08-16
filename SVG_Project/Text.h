@@ -23,8 +23,8 @@ class text : public SVGElement{
 public:
     text();
     void setValue(tinyxml2::XMLElement* element) override;
-    void draw(HDC hdc) override;
-    void draw(Graphics* graphics) override;
+    void draw(HDC hdc, gradientDatabase& database) override;
+    void draw(Graphics* graphics, gradientDatabase& database) override;
 };
 
 

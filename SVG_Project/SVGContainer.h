@@ -7,6 +7,7 @@
 
 class SVGContainer {
 	vector<SVGElement*> content; //A vector containing all SVGElement
+	gradientDatabase database;
 public:
 	void addElements(const char* fileName);
 	void addElement(tinyxml2::XMLElement* element);

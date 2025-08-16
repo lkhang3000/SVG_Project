@@ -20,8 +20,8 @@ class polygon : public SVGElement {
 	vector<Point> vertices;
 public:
 	polygon();
-	void draw(HDC hdc) override;
-	void draw(Graphics* g) override;
+	void draw(HDC hdc, gradientDatabase& database) override;
+	void draw(Graphics* g, gradientDatabase& database) override;
 	void setValue(tinyxml2::XMLElement* element) override;
 };
 

@@ -3,16 +3,19 @@
 //Polygon
 polygon::polygon() : SVGElement() {}
 
-void polygon::draw(HDC hdc) {
+void polygon::draw(HDC hdc, gradientDatabase& database) {
 	Graphics g(hdc);
-	this->draw(&g);
+	this->draw(&g, database);
 }
 
-void polygon::draw(Graphics* g) {
+void polygon::draw(Graphics* g, gradientDatabase& database) {
 	this->handleTransform(g);
 	//Fill
-	SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
-	g->FillPolygon(&brush, &this->vertices.front(), this->vertices.size());
+	Brush* brush = NULL;
+	if (this->fillID != "") brush = database.getBrush(this->fillID);
+	else brush = new SolidBrush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
+	if (brush != NULL) g->FillPolygon(brush, &this->vertices.front(), this->vertices.size());
+	delete brush;
 	//Draw Outline
 	Pen pen(Color(this->strokeOpacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
 	pen.SetWidth(this->strokeWidth);

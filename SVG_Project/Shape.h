@@ -28,7 +28,7 @@ public:
 	shape();
 	void handleTransform(Graphics* graphics);
 	virtual void setValue(tinyxml2::XMLElement* element) override;
-	virtual void draw(HDC hdc) override = 0; //When Completed, try deleting this function to see if the code still runs
+	virtual void draw(HDC hdc, gradientDatabase& database) override = 0; //When Completed, try deleting this function to see if the code still runs
 };
 
 

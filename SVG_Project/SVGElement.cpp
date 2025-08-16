@@ -7,6 +7,7 @@ SVGElement::SVGElement() {
     this->strokeWidth = 1;
 	this->fill = Color(0, 0, 0);
 	this->stroke = Color(0, 0, 0, 0);
+    this->fillID = this->strokeID = "";
 }
 void SVGElement::handleTransform(Graphics* graphics) {
     //graphics->ScaleTransform(5.0f, 5.0f);
@@ -78,7 +79,8 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
             else if (attr == "stroke-width") this->strokeWidth = atoi(val);
             else if (attr == "stroke") {
                 string sVal(val);
-                if (sVal == "black") {
+                if (sVal.find("url") != string::npos) this->strokeID = sVal;
+                else if (sVal == "black") {
                     this->stroke = Color(0, 0, 0);
                 }
                 else if (sVal == "red") {
@@ -149,7 +151,8 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
             }
             else if (attr == "fill") {
                 string sval(val);
-                if (sval == "black") {
+                if (sval.find("url") != string::npos) this->fillID = sval;
+                else if (sval == "black") {
                     this->fill = Color(0, 0, 0);
                 }
                 else if (sval == "red") {

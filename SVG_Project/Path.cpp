@@ -144,12 +144,12 @@ void path::setValue(tinyxml2::XMLElement* element) {
     }
 }
 
-void path::draw(HDC hdc) {
+void path::draw(HDC hdc, gradientDatabase& database) {
     Graphics g(hdc);
-    this->draw(&g);
+    this->draw(&g, database);
 }
 
-void path::draw(Graphics* g) {
+void path::draw(Graphics* g, gradientDatabase& database) {
     GraphicsState state = g->Save();
     this->handleTransform(g);
     GraphicsPath path;
@@ -158,10 +158,11 @@ void path::draw(Graphics* g) {
         cmd->draw(g, &path);
     }
     // Fill
-    if (fill.GetA() != 0) {
-        SolidBrush brush(fill);
-        g->FillPath(&brush, &path);
-    }
+    Brush* brush = NULL;
+    if (this->fillID != "") brush = database.getBrush(this->fillID);
+    else if (fill.GetA() != 0) brush = new SolidBrush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
+    g->FillPath(brush, &path);
+    delete brush;
     // Stroke
     if (this->stroke.GetA() > 0 && this->strokeWidth > 0) {
         Pen pen(Color(static_cast<BYTE>(this->strokeOpacity * 255), this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));

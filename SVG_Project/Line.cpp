@@ -21,19 +21,23 @@ void line::setValue(tinyxml2::XMLElement* element) {
     }
 }
 
-void line::draw(HDC hdc) {
+void line::draw(HDC hdc, gradientDatabase& database) {
     Graphics g(hdc);
     //Draw Line
-    this->draw(&g);
+    this->draw(&g, database);
 }
-void line::draw(Graphics* g) {
+void line::draw(Graphics* g, gradientDatabase& database) {
     this->handleTransform(g);
+    
+    //Brush
+    Brush* brush = NULL;
+    if (this->fillID != "") brush = database.getBrush(this->fillID);
+    else brush = new SolidBrush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
     //Pen
     Pen pen(Color(this->strokeOpacity * 255, this->stroke.GetR(), this->stroke.GetG(), this->stroke.GetB()));
-    //Brush
-    SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
     pen.SetWidth(this->strokeWidth);
-    pen.SetBrush(&brush);
+    if (brush != NULL) pen.SetBrush(brush);
     g->DrawLine(&pen, this->vertices.front(), this->vertices.back());
+    delete brush;
 }
 

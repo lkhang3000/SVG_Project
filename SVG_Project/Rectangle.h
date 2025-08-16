@@ -24,8 +24,8 @@ class rectangle : public SVGElement {
 public:
 	rectangle();
 	void setValue(tinyxml2::XMLElement* element) override;
-	void draw(HDC hdc) override;
-	void draw(Graphics* g) override;
+	void draw(HDC hdc, gradientDatabase& database) override;
+	void draw(Graphics* g, gradientDatabase& database) override;
 };
 
 

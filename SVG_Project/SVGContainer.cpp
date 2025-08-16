@@ -13,6 +13,10 @@ void SVGContainer::addElements(const char* fileName) {
 		return;
 	}
 	root = root->FirstChildElement();
+	if (string(root->Name()) == "defs") {
+		this->database.extractData(root);
+		root = root->NextSiblingElement();
+	}
 	for (tinyxml2::XMLElement* child = root; child != NULL; child = child->NextSiblingElement()) {
 		this->addElement(child);
 	}
@@ -40,7 +44,7 @@ void SVGContainer::drawAllElement(HDC hdc) {
 	for (int i = 0; i < this->content.size(); i++) {
 		this->content[i]->draw(&graphics); 
 	}*/
-	for (int i = 0; i < this->content.size(); i++) this->content[i]->draw(hdc);
+	for (int i = 0; i < this->content.size(); i++) this->content[i]->draw(hdc, this->database);
 }
 
 SVGContainer::~SVGContainer() {

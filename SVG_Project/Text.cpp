@@ -34,12 +34,12 @@ void text::setValue(tinyxml2::XMLElement* element) {
 	if (element->GetText() != NULL) this->content = element->GetText();
 }
 
-void text::draw(HDC hdc) {
+void text::draw(HDC hdc, gradientDatabase& database) {
 	Graphics g(hdc);
-	this->draw(&g);
+	this->draw(&g, database);
 }
 
-void text::draw(Graphics* g) {
+void text::draw(Graphics* g, gradientDatabase& database) {
 	GraphicsState state = g->Save();
 	this->handleTransform(g);
 
@@ -50,11 +50,11 @@ void text::draw(Graphics* g) {
 	wstring wideString = this->Utf8ToWstring(this->content);
 
 	//Setting up Brush
-	if (this->fill.GetA() > 0) {
-		SolidBrush brush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
-		g->DrawString(wideString.c_str(), -1, &font, PointF(this->origin.X, this->origin.Y), &brush);
-	}
-
+	Brush* brush = NULL;
+	if (this->fillID != "") brush = database.getBrush(this->fillID);
+	else if (this->fill.GetA() > 0) brush = new SolidBrush(Color(this->fillOpacity * 255, this->fill.GetR(), this->fill.GetG(), this->fill.GetB()));
+	g->DrawString(wideString.c_str(), -1, &font, PointF(this->origin.X, this->origin.Y), brush);
+	delete brush;
 	if (this->stroke.GetA() > 0 && this->strokeWidth > 0) {
 		GraphicsPath outline;
 

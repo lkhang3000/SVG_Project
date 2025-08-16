@@ -11,6 +11,7 @@
 #include <sstream>
 #include <vector>
 #include "tinyxml2.h"
+#include "Gradient.h"
 
 using namespace std;
 using namespace Gdiplus;
@@ -25,14 +26,16 @@ protected:
 	Color fill;
 	Color stroke;
 	int strokeWidth;
+	string strokeID;
+	string fillID;
 public:
 	SVGElement();
 	void handleTransform(Graphics* graphics);
 	void deleteTransform();
 	virtual void setValue(tinyxml2::XMLElement* element);
-	virtual void draw(HDC hdc) = 0;
-	virtual void draw(Graphics* g) = 0;
+	virtual void draw(HDC hdc, gradientDatabase& database) = 0;
+	virtual void draw(Graphics* g, gradientDatabase& database) = 0;
 	
 };
 
-#endif // !_SVGELEMENT_
+#endif // !_SVGELEMENT_ 
