@@ -1,5 +1,5 @@
 #include "Gradient.h"
-
+//Gradient
 void gradient::setValue(tinyxml2::XMLElement* element) {
     const char* attrs[] = { "id" };
     for (auto attr : attrs) {
@@ -12,6 +12,11 @@ void gradient::setValue(tinyxml2::XMLElement* element) {
     }
 }
 
+string gradient::getID() {
+    return id;
+}
+
+//linearGradient
 void linearGradient::setValue(tinyxml2::XMLElement* element) {
     gradient::setValue(element);
 
@@ -106,6 +111,50 @@ Brush* linearGradient::getBrush() {
 
 		delete[] colorArray;
 		delete[] offsetArray;
+    }
+}
+
+//radialGradient
+Brush* radialGradient::getBrush() {
+    GraphicsPath path;
+    path.AddEllipse(Rect(0, 0, 500, 500));
+    PathGradientBrush* pgb = new PathGradientBrush(&path);
+    if (!stops.empty()) {
+        pgb->SetCenterColor(stops.front().color);
+        int count = 1;
+        Color surround[1] = { stops.back().color };
+        pgb->SetSurroundColors(surround, &count);
+    }
+    else {
+        pgb->SetCenterColor(Color(255, 255, 255, 0));
+        int count = 1;
+        Color surround[1] = { Color(255, 0, 0, 255) };
+        pgb->SetSurroundColors(surround, &count);
+    }
+    return pgb;
+}
+void radialGradient::setValue(tinyxml2::XMLElement* element) {
+    gradient::setValue(element);
+    if (const char* val = element->Attribute("cx")) cx = atof(val) / 100.0f;
+    if (const char* val = element->Attribute("cy")) cy = atof(val) / 100.0f;
+    if (const char* val = element->Attribute("r"))  r = atof(val) / 100.0f;
+	
+    for (tinyxml2::XMLElement* stopEl = element->FirstChildElement("stop");
+        stopEl;
+        stopEl = stopEl->NextSiblingElement("stop"))
+    {
+        GradientStop stop{};
+        if (const char* off = stopEl->Attribute("offset")) {
+            stop.offset = static_cast<float>(atof(off));
+        }
+        if (const char* colorStr = stopEl->Attribute("stop-color")) {
+            int r = 0, g = 0, b = 0;
+            if (colorStr[0] == '#') {
+                sscanf_s(colorStr + 1, "%02x%02x%02x", &r, &g, &b);
+            }
+            stop.color = Color(255, r, g, b);
+        }
+        stops.push_back(stop);
     }
 }
 
