@@ -17,13 +17,19 @@ using namespace Gdiplus;
 class gradient {
     string id;
 public:
-    void setValue(tinyxml2::XMLElement* element);
+    virtual void setValue(tinyxml2::XMLElement* element);
     virtual Brush* getBrush() = 0;
     string getID();
 };
 
 class linearGradient : public gradient {
+private:
+    double x1, y1, x2, y2;
+    Color colors[10];
+    double offset[10];
+    int count;
 public:
+    void setValue(tinyxml2::XMLElement* element) override;
     Brush* getBrush() override;
 };
 
