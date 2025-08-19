@@ -22,6 +22,11 @@ public:
     string getID();
 };
 
+struct GradientStop {
+    float offset;   // 0.0 — 1.0
+    Color color;
+};
+
 class linearGradient : public gradient {
 private:
     double x1, y1, x2, y2;
@@ -34,8 +39,11 @@ public:
 };
 
 class radialGradient : public gradient {
+    float cx = 0.5f, cy = 0.5f, r = 0.5f;
+    vector<GradientStop> stops;
 public:
     Brush* getBrush() override;
+    void setValue(tinyxml2::XMLElement* element);
 };
 
 class gradientDatabase {
