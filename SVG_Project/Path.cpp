@@ -136,6 +136,22 @@ void path::setValue(tinyxml2::XMLElement* element) {
             }
         }
 
+        else if (cmd == "A" || cmd == "a") {
+            while (i + 6 < tokens.size() && !isCommand(tokens[i])) {
+            float rx = std::stof(tokens[i++]);
+            float ry = std::stof(tokens[i++]);
+            float xAxisRotation = std::stof(tokens[i++]);
+            int largeArcFlag = std::stoi(tokens[i++]);
+            int sweepFlag = std::stoi(tokens[i++]);
+            float x = std::stof(tokens[i++]);
+            float y = std::stof(tokens[i++]);
+            if (cmd == "a") { x += currentX; y += currentY; }
+            commands.push_back(new Arcto(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y));
+            currentX = x;
+            currentY = y;
+            }
+        }
+                
         else if (cmd == "Z" || cmd == "z") {
             commands.push_back(new ClosePath());
             currentX = startX;
