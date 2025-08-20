@@ -14,6 +14,7 @@
 #include "SVGElement.h"
 #include "MoveTo.h"
 #include "ArcTo.h"
+#include "SmoothCubicBezierTo.h"
 #include "ShortCurveTo.h"
 #include "CurveTo.h"
 #include "LineTo.h"
