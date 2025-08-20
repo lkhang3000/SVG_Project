@@ -151,7 +151,14 @@ void SVGElement::setValue(tinyxml2::XMLElement* element) {
             }
             else if (attr == "fill") {
                 string sval(val);
-                if (sval.find("url") != string::npos) this->fillID = sval;
+                if (sval.find("url") != string::npos) {
+                    // Extract the ID from url(#id)
+                    size_t start = sval.find('#');
+                    size_t end = sval.find(')', start);
+                    if (start != string::npos && end != string::npos) {
+                        this->fillID = sval.substr(start + 1, end - start - 1);
+                    }
+                }
                 else if (sval == "black") {
                     this->fill = Color(0, 0, 0);
                 }
