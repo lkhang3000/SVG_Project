@@ -151,7 +151,37 @@ void path::setValue(tinyxml2::XMLElement* element) {
             currentY = y;
             }
         }
-                
+            
+        else if (cmd == "S" || cmd == "s") {
+            float prevC2X = currentX, prevC2Y = currentY;
+            // Find previous CurveTo or SmoothCubicBezierTo for reflection
+            if (!commands.empty()) {
+                auto* prev = commands.back();
+                if (auto* c = dynamic_cast<CurveTo*>(prev)) {
+                    // Reflect previous control point
+                    prevC2X = 2 * currentX - c->p2.X;
+                    prevC2Y = 2 * currentY - c->p2.Y;
+                }
+                else if (auto* s = dynamic_cast<SmoothCubicBezierTo*>(prev)) {
+                    prevC2X = 2 * currentX - s->x2;
+                    prevC2Y = 2 * currentY - s->y2;
+                }
+            }
+            while (i + 3 < tokens.size() && !isCommand(tokens[i])) {
+                float x2 = std::stof(tokens[i++]);
+                float y2 = std::stof(tokens[i++]);
+                float x = std::stof(tokens[i++]);
+                float y = std::stof(tokens[i++]);
+                float ctrl2X = (cmd == "s") ? (currentX + x2) : x2;
+                float ctrl2Y = (cmd == "s") ? (currentY + y2) : y2;
+                float endX = (cmd == "s") ? (currentX + x) : x;
+                float endY = (cmd == "s") ? (currentY + y) : y;
+                commands.push_back(new SmoothCubicBezierTo(prevC2X, prevC2Y, ctrl2X, ctrl2Y, endX, endY));
+                prevC2X = ctrl2X; prevC2Y = ctrl2Y;
+                currentX = endX; currentY = endY;
+            }
+        }
+       
         else if (cmd == "Z" || cmd == "z") {
             commands.push_back(new ClosePath());
             currentX = startX;
