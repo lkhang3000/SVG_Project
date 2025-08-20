@@ -13,6 +13,7 @@
 
 #include "SVGElement.h"
 #include "MoveTo.h"
+#include "ArcTo.h"
 #include "CurveTo.h"
 #include "LineTo.h"
 #include "HLineTo.h"
